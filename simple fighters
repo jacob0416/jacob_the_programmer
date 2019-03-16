@@ -1,0 +1,71 @@
+@echo off 
+title simple fighters
+
+:title_menu
+echo   /////////////////////////////
+echo  /     simple fighters       /
+echo /////////////////////////////
+echo .
+echo .
+echo s to start
+echo e to exit
+choice /c:se /m "choose an action. "
+if errorlevel 2 exit
+if errorlevel 1 goto start
+goto title_menu
+
+:start
+cls
+echo k to kick
+echo p to punch
+set /a p1hp=5
+set /a cpuhp=5
+set /a damage=1
+ping localhost -n 5 >nul
+cls
+goto main
+
+:main
+cls
+echo   0    0      [p1 hp:%p1hp%  ]
+echo  /!\  /!\     [cpu hp:%cpuhp% ]
+echo  / \  / \     [         ]
+choice /c:kp /m " " >nul
+if errorlevel 2 goto p1p
+if errorlevel 1 goto p1k
+goto main
+
+:p1p
+cls
+echo   0__  0      [p1 hp:%p1hp%  ]
+echo  /!   /!\     [cpu hp:%cpuhp% ]
+echo  / \  / \     [         ]
+ping localhost -n 1 >nul
+if %cpuhp% LSS 1 (
+echo finish him
+pause >nul
+)
+if %cpuhp% LSS 0 goto p1win
+set /a cpuhp=%cpuhp%-%damage%
+goto main
+
+:p1k
+cls
+echo   0    0      [p1 hp:%p1hp%  ]
+echo  /!\  /!\     [cpu hp:%cpuhp% ]
+echo  / -  / \     [         ]
+ping localhost -n 1 >nul
+if %cpuhp% LSS 1 ( 
+echo finish him
+pause >nul
+)
+if %cpuhp% LSS 0 goto p1win
+set /a cpuhp=%cpuhp%-%damage%
+goto main
+
+:p1win
+cls 
+echo congatulations you win
+pause
+cls
+goto title_menu
